@@ -68,8 +68,13 @@ function createSmsLinksInHtml(phones, messages, labels) {
  * @customfunction
  */
 function createPhoneCallLinksInHtml(phones, labels) {
-  return createLinksInHtml_(phones, null, null, labels, (phone, _, _, label) =>
-    phone ? createAnchor_(`tel:${phone}`, label) : ''
+  return createLinksInHtml_(
+    phones,
+    null,
+    null,
+    labels,
+    (phone, _subject, _message, label) =>
+      phone ? createAnchor_(`tel:${phone}`, label) : ''
   );
 }
 

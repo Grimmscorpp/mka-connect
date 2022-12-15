@@ -9,15 +9,13 @@ function embolden(text) {
 }
 
 /**
- * Translates an array of texts from Bengali to English.
- * @param {Array<Array>} texts The texts to translate from Bengali to English.
- * @returns {Array<Array>} The supplied texts translated from Bengali to English.
+ * Translates a given text in Bengali to English.
+ * @param {Array<Array>} text The text to translate from Bengali to English.
+ * @returns {Array<Array>} The supplied text translated from Bengali to English.
  * @customfunction
  */
-function translateFromBengaliToEnglish(texts) {
-  return texts.map((row) =>
-    row.map((text) => LanguageApp.translate(text, 'bn', 'en'))
-  );
+function translateFromBengaliToEnglish(text) {
+  return LanguageApp.translate(text, 'bn', 'en');
 }
 
 /**

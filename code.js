@@ -130,7 +130,7 @@ function createLinksInHtml_(
   if (isNullOrUndefined_(subjects)) {
     return createLinksInHtml_(
       contacts,
-      subjects.map((row) => row.map(() => '')),
+      contacts.map((row) => row.map(() => '')),
       messages,
       labels,
       linkGenerator

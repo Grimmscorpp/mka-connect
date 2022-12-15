@@ -1,83 +1,58 @@
 /**
- * Emboldens a given text in HTML.
- * @param {string} text The text to embolden.
- * @returns {string} The supplied text emboldened in HTML.
+ * Creates DM links for an array of WhatsApp numbers in HTML.
+ * @param {Array<Array>} phones The WhatsApp numbers.
+ * @param {string | Array<Array>} [messages] The URL encoded message(s) to send.
+ * @param {string | Array<Array>} [labels] The label(s) to show on the generated links.
+ * @returns The supplied WhatsApp numbers turned into DM links with pre-filled message texts in HTML.
  * @customfunction
  */
-function embolden(text) {
-  return `<b>${text}</b>`;
-}
-
-/**
- * Translates an array of texts from Bengali to English.
- * @param {Array<Array>} texts The texts to translate from Bengali to English.
- * @returns {Array<Array>} The supplied texts translated from Bengali to English.
- * @customfunction
- */
-function translateFromBengaliToEnglish(texts) {
-  return texts.map((row) =>
-    row.map((text) => LanguageApp.translate(text, 'bn', 'en'))
+function createWhatsAppMessageLinksInHtml(phones, messages, labels) {
+  return createLinksInHtml_(
+    phones,
+    null,
+    messages,
+    labels,
+    (phone, _, message, label) =>
+      phone
+        ? createAnchor_(`https://wa.me/${phone}?text=${message}`, label)
+        : ''
   );
 }
 
 /**
- * Creates DM links for an array of WhatsApp contacts in HTML.
- * @param {Array<Array>} phones The WhatsApp numbers.
- * @param {string | Array<Array>} [messages] The URL encoded message(s) to send. Must be a `string` or a grid matching the structure of `phones`.
- * @param {string | Array<Array>} [labels] The label(s) to show on the generated links. Must be a `string` or a grid matching the structure of `phones`.
- * @returns The supplied WhatsApp contacts turned into DM links with pre-filled message texts in HTML.
+ * Creates SMS links for an array of phone numbers in HTML.
+ * @param {Array<Array>} phones The phone numbers.
+ * @param {string | Array<Array>} [messages] The URL encoded message(s) to send.
+ * @param {string | Array<Array>} [labels] The label(s) to show on the generated links.
+ * @returns The supplied phone numbers turned into SMS links with pre-filled message texts in HTML.
  * @customfunction
  */
-function createWhatsAppMessageLinksInHtml(phones, messages, labels) {
-  if (isNullOrUndefined(messages)) {
-    return createWhatsAppMessageLinksInHtml(
-      phones,
-      phones.map((row) => row.map(() => '')),
-      labels
-    );
-  }
+function createSmsLinksInHtml(phones, messages, labels) {
+  return createLinksInHtml_(
+    phones,
+    null,
+    messages,
+    labels,
+    (phone, _, message, label) =>
+      phone ? createAnchor_(`sms:${phone}?body=${message}`, label) : ''
+  );
+}
 
-  if (!Array.isArray(messages)) {
-    return createWhatsAppMessageLinksInHtml(
-      phones,
-      phones.map((row) => row.map(() => messages)),
-      labels
-    );
-  }
-
-  if (
-    phones.length != messages.length ||
-    phones[0].length != messages[0].length
-  ) {
-    throw 'The structure of the `messages` grid must match that of `phones`.';
-  }
-
-  if (isNullOrUndefined(labels)) {
-    return createWhatsAppMessageLinksInHtml(phones, messages, phones);
-  }
-
-  if (!Array.isArray(labels)) {
-    return createWhatsAppMessageLinksInHtml(
-      phones,
-      messages,
-      phones.map((row) => row.map(() => labels))
-    );
-  }
-
-  if (phones.length != labels.length || phones[0].length != labels[0].length) {
-    throw 'The structure of the `labels` grid must match that of `phones`.';
-  }
-
-  return phones.map((row, i) =>
-    row.map((cell, j) => {
-      const value = cell.trim();
-      return value
-        ? createAnchor_(
-            `https://wa.me/${value}?text=${messages[i][j].trim()}`,
-            labels[i][j]
-          )
-        : '';
-    })
+/**
+ * Creates phone-call links for an array of phone numbers in HTML.
+ * @param {Array<Array>} phones The phone numbers.
+ * @param {string | Array<Array>} [labels] The label(s) to show on the generated links.
+ * @returns The supplied phone numbers turned into phone-call links in HTML.
+ * @customfunction
+ */
+function createPhoneCallLinksInHtml(phones, labels) {
+  return createLinksInHtml_(
+    phones,
+    null,
+    null,
+    labels,
+    (phone, _subject, _message, label) =>
+      phone ? createAnchor_(`tel:${phone}`, label) : ''
   );
 }
 
@@ -106,9 +81,6 @@ function createListInHtml(grid, title, numPartitions) {
     '   h1 {' +
     '     text-align: center;' +
     '   }' +
-    '   .container {' +
-    '     border: 1px solid red;' +
-    '   }' +
     ' </style>' +
     ' </head>' +
     ' <body>' +
@@ -128,7 +100,86 @@ function createListInHtml(grid, title, numPartitions) {
   return result;
 }
 
-function isNullOrUndefined(value) {
+function createLinksInHtml_(
+  contacts,
+  subjects,
+  messages,
+  labels,
+  linkGenerator
+) {
+  if (isNullOrUndefined_(subjects)) {
+    return createLinksInHtml_(
+      contacts,
+      contacts.map((row) => row.map(() => '')),
+      messages,
+      labels,
+      linkGenerator
+    );
+  }
+
+  if (!Array.isArray(subjects)) {
+    return createLinksInHtml_(
+      contacts,
+      contacts.map((row) => row.map(() => subjects)),
+      messages,
+      labels,
+      linkGenerator
+    );
+  }
+
+  if (isNullOrUndefined_(messages)) {
+    return createLinksInHtml_(
+      contacts,
+      subjects,
+      contacts.map((row) => row.map(() => '')),
+      labels,
+      linkGenerator
+    );
+  }
+
+  if (!Array.isArray(messages)) {
+    return createLinksInHtml_(
+      contacts,
+      subjects,
+      contacts.map((row) => row.map(() => messages)),
+      labels,
+      linkGenerator
+    );
+  }
+
+  if (isNullOrUndefined_(labels)) {
+    return createLinksInHtml_(
+      contacts,
+      subjects,
+      messages,
+      contacts,
+      linkGenerator
+    );
+  }
+
+  if (!Array.isArray(labels)) {
+    return createLinksInHtml_(
+      contacts,
+      subjects,
+      messages,
+      contacts.map((row) => row.map(() => labels)),
+      linkGenerator
+    );
+  }
+
+  return contacts.map((row, i) =>
+    row.map((contact, j) => {
+      return linkGenerator(
+        contact.trim(),
+        subjects[i][j],
+        messages[i][j],
+        labels[i][j]
+      );
+    })
+  );
+}
+
+function isNullOrUndefined_(value) {
   return value === null || value === undefined;
 }
 

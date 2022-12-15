@@ -1,24 +1,4 @@
 /**
- * Emboldens a given text in HTML.
- * @param {string} text The text to embolden.
- * @returns {string} The supplied text emboldened in HTML.
- * @customfunction
- */
-function embolden(text) {
-  return `<b>${text}</b>`;
-}
-
-/**
- * Translates a given text in Bengali to English.
- * @param {Array<Array>} text The text to translate from Bengali to English.
- * @returns {Array<Array>} The supplied text translated from Bengali to English.
- * @customfunction
- */
-function translateFromBengaliToEnglish(text) {
-  return LanguageApp.translate(text, 'bn', 'en');
-}
-
-/**
  * Creates DM links for an array of WhatsApp numbers in HTML.
  * @param {Array<Array>} phones The WhatsApp numbers.
  * @param {string | Array<Array>} [messages] The URL encoded message(s) to send.

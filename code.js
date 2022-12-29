@@ -1,58 +1,74 @@
 /**
- * Creates DM links for an array of WhatsApp numbers in HTML.
+ * Creates DM links for an array of WhatsApp numbers.
  * @param {Array<Array>} phones The WhatsApp numbers.
  * @param {string | Array<Array>} [messages] The URL encoded message(s) to send.
  * @param {string | Array<Array>} [labels] The label(s) to show on the generated links.
- * @returns The supplied WhatsApp numbers turned into DM links with pre-filled message texts in HTML.
+ * @returns The supplied WhatsApp numbers turned into DM links with pre-filled message texts.
  * @customfunction
  */
-function createWhatsAppMessageLinksInHtml(phones, messages, labels) {
+function WHATSAPP(phones, messages, labels) {
   return createLinksInHtml_(
     phones,
     null,
     messages,
     labels,
     (phone, _, message, label) =>
-      phone
-        ? createAnchor_(`https://wa.me/${phone}?text=${message}`, label)
-        : ''
+      createAnchor_(`https://wa.me/${phone}?text=${message}`, label)
   );
 }
 
 /**
- * Creates SMS links for an array of phone numbers in HTML.
+ * Creates SMS links for an array of phone numbers.
  * @param {Array<Array>} phones The phone numbers.
  * @param {string | Array<Array>} [messages] The URL encoded message(s) to send.
  * @param {string | Array<Array>} [labels] The label(s) to show on the generated links.
- * @returns The supplied phone numbers turned into SMS links with pre-filled message texts in HTML.
+ * @returns The supplied phone numbers turned into SMS links with pre-filled message texts.
  * @customfunction
  */
-function createSmsLinksInHtml(phones, messages, labels) {
+function SMS(phones, messages, labels) {
   return createLinksInHtml_(
     phones,
     null,
     messages,
     labels,
     (phone, _, message, label) =>
-      phone ? createAnchor_(`sms:${phone}?body=${message}`, label) : ''
+      createAnchor_(`sms:${phone}?body=${message}`, label)
   );
 }
 
 /**
- * Creates phone-call links for an array of phone numbers in HTML.
+ * Creates phone-call links for an array of phone numbers.
  * @param {Array<Array>} phones The phone numbers.
  * @param {string | Array<Array>} [labels] The label(s) to show on the generated links.
- * @returns The supplied phone numbers turned into phone-call links in HTML.
+ * @returns The supplied phone numbers turned into phone-call links.
  * @customfunction
  */
-function createPhoneCallLinksInHtml(phones, labels) {
+function TEL(phones, labels) {
   return createLinksInHtml_(
     phones,
     null,
     null,
     labels,
-    (phone, _subject, _message, label) =>
-      phone ? createAnchor_(`tel:${phone}`, label) : ''
+    (phone, _subject, _message, label) => createAnchor_(`tel:${phone}`, label)
+  );
+}
+
+/**
+ * Creates mailto links for an array of email addresses.
+ * @param {Array<Array>} emails The email addresses.
+ * @param {string | Array<Array>} [subjects] The URL encoded email subject(s).
+ * @param {string | Array<Array>} [messages] The URL encoded email body/bodies.
+ * @param {string | Array<Array>} [labels] The label(s) to show on the generated links.
+ * @returns The supplied email addresses turned into mailto links with pre-filled subjects and bodies.
+ */
+function MAILTO(emails, subjects, messages, labels) {
+  return createLinksInHtml_(
+    emails,
+    subjects,
+    messages,
+    labels,
+    (email, subject, message, label) =>
+      createAnchor_(`mailto:${email}?subject=${subject}&body=${message}`, label)
   );
 }
 
@@ -64,7 +80,7 @@ function createPhoneCallLinksInHtml(phones, labels) {
  * @returns An HTML list from the grid broken down to the supplied number of partitions.
  * @customfunction
  */
-function createListInHtml(grid, title, numPartitions) {
+function LIST(grid, title, numPartitions) {
   const possibleNumPartitions = Math.min(numPartitions || 1, 12, grid.length);
   const html =
     ' <!DOCTYPE html>' +
@@ -168,13 +184,11 @@ function createLinksInHtml_(
   }
 
   return contacts.map((row, i) =>
-    row.map((contact, j) => {
-      return linkGenerator(
-        contact.trim(),
-        subjects[i][j],
-        messages[i][j],
-        labels[i][j]
-      );
+    row.map((cell, j) => {
+      const contact = cell.trim();
+      return contact
+        ? linkGenerator(contact, subjects[i][j], messages[i][j], labels[i][j])
+        : '';
     })
   );
 }

@@ -6,7 +6,7 @@ A library for generating links to connect to contacts in a Google Sheet.
 
 ### 1. Create a Google Sheet
 
-The following contacts are now real. Some of them were taken from the internet, others were generated randomly. You are suggested to use your real contacts.
+The following contacts are not real. Some of them were taken from the internet, others were generated randomly. You are suggested to use your own contacts.
 
 | | A | B | C | D | E | F | G | H | I | J | K | L | M | N | O | P | Q |
 | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |

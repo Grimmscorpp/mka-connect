@@ -60,6 +60,7 @@ function TEL(phones, labels) {
  * @param {string | Array<Array>} [messages] The URL encoded email body/bodies.
  * @param {string | Array<Array>} [labels] The label(s) to show on the generated links.
  * @returns The supplied email addresses turned into mailto links with pre-filled subjects and bodies.
+ * @customfunction
  */
 function MAILTO(emails, subjects, messages, labels) {
   return createLinksInHtml_(

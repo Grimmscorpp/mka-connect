@@ -88,4 +88,4 @@ After applying the steps above, Q2 will hold the final list. Copy the contents i
 
 ### 5. Note
 
-The maximum allowed number characters in a single cell in Google Sheet is 5000. If the contents of the list exceeds this limit, the contents will overflow to the adjascent rows.
+The maximum number of characters a single Google Sheet cell can hold is `5000`. If the contents of the list exceeds this limit, the contents will overflow to the adjascent rows.

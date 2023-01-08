@@ -1,12 +1,3 @@
-<style>
-  th, td:first-child {
-    border-style: none;
-  }
-  td {
-    border-style: solid;
-  }
-</style>
-
 # mka-connect
 
 A library for generating links to connect and send personalized messages to contacts in a Google Sheet.

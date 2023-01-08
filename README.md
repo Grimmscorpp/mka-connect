@@ -9,7 +9,7 @@
 
 # mka-connect
 
-A library for generating links to connect to contacts in a Google Sheet.
+A library for generating links to connect and send personalized messages to contacts in a Google Sheet.
 
 ## Usage
 
@@ -48,13 +48,13 @@ This will make the custom functions in this repo available to your spreadsheet.
 ### 3. Separate contacts based on types
 
 * D2: `=IF(B2 = "whatsapp", C2, "")`.
-  * Fill down to D17.
+  * Fill down to the last row.
 * E2: `=IF(B2 = "sms", C2, "")`.
-  * Fill down to E17.
+  * Fill down to the last row.
 * F2: `=IF(B2 = "call", C2, "")`.
-  * Fill down to F17.
+  * Fill down to the last row.
 * G2: `=IF(B2 = "email", C2, "")`.
-  * Fill down to G17.
+  * Fill down to the last row.
 
 |    | D             | E             | F             | G                      |
 | -: | ------------- | ------------- | ------------- | ---------------------- |
@@ -79,9 +79,9 @@ This will make the custom functions in this repo available to your spreadsheet.
 ### 4. Add message subject and body
 
 * H2: `=ENCODEURL("Greetings")`.
-  * Fill down to H17.
+  * Fill down to the last row.
 * I2: `=ENCODEURL("Hello "&A2&"!")`.
-  * Fill down to I17.
+  * Fill down to the last row.
 
 |    | H           | I                         |
 | -: | ----------- | ------------------------- |
@@ -133,11 +133,11 @@ This will make the custom functions in this repo available to your spreadsheet.
 ### 6. Create the list
 
 * N2: `=ROW()-1`.
-  * Fill down to N17.
+  * Fill down to the last row.
 * O2: `=A2`.
-  * Fill down to O17.
+  * Fill down to the last row.
 * P2: `=CONCATENATE(J2:M2)`.
-  * Fill down to P17.
+  * Fill down to the last row.
 * Q2: `=LIST(N2:P17, "Send Messages", 2)`.
 
 |    | N       | O             | P                        | Q                  |
